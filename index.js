@@ -53,6 +53,7 @@ const init = () => {
           viewAllEmployees();
           break;
         case "Add a department":
+          // done
           addDepartment();
           break;
         case "Add a role":
@@ -133,30 +134,63 @@ const addDepartment = () => {
     });
 };
 
-// const updateEmployeeRole = () => {
-//   inquirer
-//     .prompt([
-//       {
-//         type: "input",
-//         name: "role",
-//         message: "Insert the department name you are updating:  ",
-//       },
-//       {
-//         type: "number",
-//         name: "new_department_id",
-//         message: "Insert the NEW department number you want to add: ",
-//       },
-//     ])
-//     .then((answer) => {
-//       db.query(
-//         `UPDATE department SET id = ${answer.new_department_id} WHERE name = "${answer.department_name}";`,
-//         function (err, results) {
-//           console.log("Department ID UPDATED");
-//           init();
-//         }
-//       );
-//     });
-// };
+const addRole = () => {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "new_role",
+        message: "Insert the NEW role name you want to add: ",
+      },
+      {
+        type: "number",
+        name: "new_salary",
+        message: "Insert the NEW salary amount: ",
+      },
+      {
+        type: "number",
+        name: "new_department_id",
+        message: "Insert the NEW department ID: ",
+      },
+    ])
+    .then((answers) => {
+      db.query(
+        `INSERT INTO
+      role (title, salary, department_id)
+    VALUES
+      ("${answers.new_role}", ${answers.new_salary}, ${answers.new_department_id});`,
+        function (err, results) {
+          console.table(results);
+          init();
+        }
+      );
+    });
+};
+
+const updateEmployeeRole = () => {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "role",
+        message: "Insert the department name you are updating:  ",
+      },
+      {
+        type: "number",
+        name: "new_department_id",
+        message: "Insert the NEW department number you want to add: ",
+      },
+    ])
+    .then((answer) => {
+      db.query(
+        `UPDATE department SET id = ${answer.new_department_id} WHERE name = "${answer.department_name}";`,
+        function (err, results) {
+          console.log("Department ID UPDATED");
+          init();
+        }
+      );
+    });
+};
 
 const updateDepartmentID = () => {
   inquirer
