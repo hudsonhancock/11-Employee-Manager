@@ -57,9 +57,11 @@ const init = () => {
           addDepartment();
           break;
         case "Add a role":
+          // done
           addRole();
           break;
         case "Add an employee":
+          // done
           addEmployee();
           break;
         case "Delete an employee":
@@ -167,25 +169,32 @@ const addRole = () => {
     });
 };
 
-const updateEmployeeRole = () => {
+const addEmployee = () => {
   inquirer
     .prompt([
       {
         type: "input",
-        name: "role",
-        message: "Insert the department name you are updating:  ",
+        name: "first_name",
+        message: "First name: ",
+      },
+      {
+        type: "input",
+        name: "last_name",
+        message: "Last name: ",
       },
       {
         type: "number",
-        name: "new_department_id",
-        message: "Insert the NEW department number you want to add: ",
+        name: "role_id",
+        message: "Role ID: ",
       },
     ])
-    .then((answer) => {
+    .then((answers) => {
       db.query(
-        `UPDATE department SET id = ${answer.new_department_id} WHERE name = "${answer.department_name}";`,
+        `INSERT INTO employees (first_name, last_name, role_id)
+    VALUES ("${answers.first_name}", "${answers.last_name}", ${answers.role_id});`,
         function (err, results) {
-          console.log("Department ID UPDATED");
+          console.log("hello");
+          console.table(results);
           init();
         }
       );
@@ -211,6 +220,31 @@ const updateDepartmentID = () => {
         `UPDATE department SET id = ${answer.new_department_id} WHERE name = "${answer.department_name}";`,
         function (err, results) {
           console.log("Department ID UPDATED");
+          init();
+        }
+      );
+    });
+};
+
+const updateEmployeeRole = () => {
+  inquirer
+    .prompt([
+      {
+        type: "number",
+        name: "new_role_id",
+        message: "Insert the NEW role_id: ",
+      },
+      {
+        type: "input",
+        name: "employee_id",
+        message: "Insert the employee ID, whom's role id you are updating:  ",
+      },
+    ])
+    .then((answers) => {
+      db.query(
+        `UPDATE employees SET role_id = ${answers.new_role_id} WHERE id = ${answers.employee_id};`,
+        function (err, results) {
+          console.log("Role ID UPDATED");
           init();
         }
       );
