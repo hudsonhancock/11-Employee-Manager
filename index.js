@@ -69,6 +69,7 @@ const init = () => {
           deleteEmployee();
           break;
         case "Update an employee role":
+          // done
           updateEmployeeRole();
           break;
         case "Update a department ID":
